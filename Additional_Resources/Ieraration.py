@@ -1,0 +1,1 @@
+Hierarchy: list = ['6', '7', '8', '9', 'JACK', 'QUEEN', 'KING', 'ACE']
