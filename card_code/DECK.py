@@ -25,6 +25,5 @@ class Deck:
         self.main_deck = requests.get(Point).json()['cards']
         return self.main_deck
     def GiveAway_Card(self):
-        self.main_deck.remove('')
-
+        pass
 
