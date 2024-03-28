@@ -21,7 +21,7 @@ class Deck:
         response = requests.get(endPoint, params=params)
         self.deck_id= response.json()["deck_id"]
     def GetDeck(self):
-        Point = f"https://deckofcardsapi.com/api/deck/{self.deck_id}/draw/?count=36"
+        Point = f"https://deckofcardsapi.com/api/deck/{self.deck_id}/draw/?count=52"
         self.main_deck = requests.get(Point).json()['cards']
         return self.main_deck
     def GiveAway_Card(self):
