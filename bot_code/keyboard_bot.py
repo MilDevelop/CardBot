@@ -6,3 +6,10 @@ def first_keyboard():
     markup_no = types.KeyboardButton(LEXICON_RU['no_button'])
     markup.row(markup_yes, markup_no)
     return markup
+
+def Player_field(mass_card: list):
+    markup = types.ReplyKeyboardMarkup()
+    for i in range(len(mass_card)):
+        mark = types.KeyboardButton(mass_card[i]['value']) #размерность карты пример: (9, валет, 10, король)
+        markup.row(mark)
+    return markup
