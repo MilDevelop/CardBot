@@ -13,3 +13,14 @@ LEXICON_RU: dict[str, str] = {'yes_button': 'ДА!',
                               'no_card': 'Нужно перетасовать колоду!',
                               'draw': 'Ничья',
                               'not_cmd': 'Я не понимать...'}
+
+def simbol(name: str):
+    list = ['❤️', '♠️', '♣️', '♦️']
+    if name == 'HEARTS':
+        return list[0]
+    elif name == 'SPADES':
+        return list[1]
+    elif name == 'CLUBS':
+        return list[2]
+    elif name == 'DIAMONDS':
+        return list[3]
