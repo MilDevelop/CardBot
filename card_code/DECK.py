@@ -8,7 +8,6 @@
 #     def Check(self, user_mast: str, bot_mast: str):
 #         return user_mast[-1] == bot_mast.lower()
 import requests, pprint
-import PLAYER, BOT_ACTIONS
 class Deck:
     def __init__(self):
         self.deck_id: str
@@ -23,7 +22,13 @@ class Deck:
     def GetDeck(self):
         Point = f"https://deckofcardsapi.com/api/deck/{self.deck_id}/draw/?count=52"
         self.main_deck = requests.get(Point).json()['cards']
-        return self.main_deck
-    def GiveAway_Card(self):
-        pass
+        #return self.main_deck
+    def GiveAway_Card(self, need_cards) -> list:
+        Given_Cards = []
+        for item in range(need_cards):
+            pprint.pprint(self.main_deck[item])
+            Given_Cards.append(self.main_deck[item])
+            self.main_deck.remove(self.main_deck[item])
+        return Given_Cards
+
 
