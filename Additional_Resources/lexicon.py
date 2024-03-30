@@ -28,3 +28,4 @@ def simbol(name: str):
         return list[2]
     elif name == 'DIAMONDS':
         return list[3]
+

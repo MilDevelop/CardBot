@@ -25,11 +25,11 @@ def on_click_start(message):
         bot.send_message(message.chat.id, LEXICON_RU['start_game'])
         bot.send_message(message.chat.id, 'Окей', reply_markup=types.ReplyKeyboardRemove()) #Вмнесто окей поставить смайлы мастей (периодично меняющихся)
         bot.send_message(message.chat.id, 'Происходит перетасовка карт...'
-                                          'Сейчас вы увидете свои карты', Game_Start(), reply_markup=keyboard_bot.Player_field(Player.User_deck))
+                                          'Сейчас вы увидете свои карты', Game_Start(message), reply_markup=keyboard_bot.Player_field(Player.User_deck))
         rand = randint(0, 1)
         if rand == 0: #Переделать для дальнейших игр
             bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
-            bot.send_photo(message.chat.id, Bot_Game.Atack_Bot())
+            bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump()))
         else:
             bot.send_message(message.chat.id, LEXICON_RU['step_yourself'])
     elif message.text == LEXICON_RU['no_button']:
@@ -38,9 +38,9 @@ def on_click_start(message):
     else:
         bot.send_message(message.chat.id, LEXICON_RU['not_cmd'])
 
-def Game_Start():
+def Game_Start(message):
     deck.shuffle()
-    deck.GetDeck()
+    bot.send_message(message.chat.id, f'{deck.GetDeck()} - козырь!')
     Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.need_cards))
     Player.GiveCards(deck.GiveAway_Card(Player.need_cards))
 
