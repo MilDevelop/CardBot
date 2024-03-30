@@ -14,9 +14,9 @@ class Bot_Game:
     def Atack_Bot(self):
         rang_card: dict = {}
         for element in self.Bot_deck:
-            if element in Hierarchy:
-                print(Hierarchy.index(element))
-                rang_card[Hierarchy.index(element)] = element
-        self.Bot_deck.pop(rang_card[min(list(rang_card.keys()))])
+            if element['value'] in Hierarchy:
+                rang_card[Hierarchy.index(element['value'])] = element
+        el = rang_card[min(list(rang_card.keys()))]
+        self.Bot_deck.remove(rang_card[min(list(rang_card.keys()))])
         return rang_card[min(list(rang_card.keys()))]['images']['png']
 
