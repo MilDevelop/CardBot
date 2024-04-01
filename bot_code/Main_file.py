@@ -13,6 +13,7 @@ deck = Deck()
 Bot_Game = Bot_Game()
 Player = Player()
 game_filter = False
+#сфтус сходившего игрока
 #----------------------------------------------------------------
 
 @bot.message_handler(commands=['start'])
@@ -63,7 +64,7 @@ def photo(message):
 
 @bot.callback_query_handler(func=Final_Test(game_filter))
 def Game_Process():
-    print("Game")
+    pass
 Game_Process()
 @bot.message_handler(content_types=['text'])
 def other_text(message):
