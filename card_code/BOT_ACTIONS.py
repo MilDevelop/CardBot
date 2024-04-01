@@ -18,7 +18,6 @@ class Bot_Game:
             if element['suit'] != trump:
                 if element['value'] in Hierarchy:
                     rang_card[Hierarchy.index(element['value'])] = element
-        el = rang_card[min(list(rang_card.keys()))]
         self.Bot_deck.remove(rang_card[min(list(rang_card.keys()))])
         return rang_card[min(list(rang_card.keys()))]['images']['png']
 

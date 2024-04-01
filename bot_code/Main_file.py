@@ -30,8 +30,10 @@ def on_click_start(message):
         if rand == 0: #Переделать для дальнейших игр
             bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
             bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump()))
+            game_filter = True
         else:
             bot.send_message(message.chat.id, LEXICON_RU['step_yourself'])
+            game_filter = True
     elif message.text == LEXICON_RU['no_button']:
         bot.send_message(message.chat.id, 'Зачем вы тогда открыли игру...')
         bot.send_message(message.chat.id, 'Окей', reply_markup=types.ReplyKeyboardRemove())
@@ -44,11 +46,12 @@ def Game_Start(message):
     Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.need_cards))
     Player.GiveCards(deck.GiveAway_Card(Player.need_cards))
 
-
+def Final_Test(arg):
+    return arg
 #bot.set_my_commands() -> after truble
 @bot.message_handler(commands=['help'])
 def help(message):
-    bot.send_message(message.chat.id, LEXICON_RU['/help'])
+     bot.send_message(message.chat.id, LEXICON_RU['/help'])
 
 @bot.message_handler(commands=['broken'])
 def broken(message):
@@ -58,6 +61,10 @@ def broken(message):
 def photo(message):
     bot.send_message(message.chat.id, LEXICON_RU['/take'])
 
+@bot.callback_query_handler(func=Final_Test(game_filter))
+def Game_Process():
+    print("Game")
+Game_Process()
 @bot.message_handler(content_types=['text'])
 def other_text(message):
     bot.send_message(message.chat.id, LEXICON_RU['not_cmd'])
