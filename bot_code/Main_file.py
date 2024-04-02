@@ -12,8 +12,6 @@ bot = telebot.TeleBot(config.tg_bot.token)
 deck = Deck()
 Bot_Game = Bot_Game()
 Player = Player()
-game_filter = False
-#сфтус сходившего игрока
 #----------------------------------------------------------------
 
 @bot.message_handler(commands=['start'])
@@ -29,12 +27,11 @@ def on_click_start(message):
                                           'Сейчас вы увидете свои карты', Game_Start(message), reply_markup=keyboard_bot.Player_field(Player.User_deck))
         rand = randint(0, 1)
         if rand == 0: #Переделать для дальнейших игр
-            bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
             bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump()))
-            game_filter = True
+            bot.send_message(message.chat.id, LEXICON_RU['step_bot'], Game_Process(message, rand))
+
         else:
-            bot.send_message(message.chat.id, LEXICON_RU['step_yourself'])
-            game_filter = True
+            bot.send_message(message.chat.id, LEXICON_RU['step_yourself'], Game_Process(message, rand))
     elif message.text == LEXICON_RU['no_button']:
         bot.send_message(message.chat.id, 'Зачем вы тогда открыли игру...')
         bot.send_message(message.chat.id, 'Окей', reply_markup=types.ReplyKeyboardRemove())
@@ -47,8 +44,14 @@ def Game_Start(message):
     Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.need_cards))
     Player.GiveCards(deck.GiveAway_Card(Player.need_cards))
 
-def Final_Test(arg):
-    return arg
+def Game_Process(message, rand: int) -> None:
+    if rand == 0:
+        @bot.callback_query_handler(func=lambda call: call.data)
+        def p():
+            pass
+
+    else:
+        pass
 #bot.set_my_commands() -> after truble
 @bot.message_handler(commands=['help'])
 def help(message):
@@ -62,10 +65,6 @@ def broken(message):
 def photo(message):
     bot.send_message(message.chat.id, LEXICON_RU['/take'])
 
-@bot.callback_query_handler(func=Final_Test(game_filter))
-def Game_Process():
-    pass
-Game_Process()
 @bot.message_handler(content_types=['text'])
 def other_text(message):
     bot.send_message(message.chat.id, LEXICON_RU['not_cmd'])
