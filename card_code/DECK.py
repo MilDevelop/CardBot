@@ -16,6 +16,7 @@ class Deck:
         self.garbage_deck: list
         self.field: list
         self.trump_card: str
+        self.first_field: int
     def shuffle(self):
         endPoint = "https://deckofcardsapi.com/api/deck/new/shuffle/"
         params = {"deck_count": 1}
@@ -27,6 +28,8 @@ class Deck:
         self.trump_card = choice(['HEARTS', 'DIAMONDS', 'SPADES', 'CLUBS'])
         return self.trump_card
 
+    def first_step(self, number: int):
+        self.first_field = number
     def Return_Trump(self) -> str:
         return self.trump_card
     def GiveAway_Card(self, need_cards) -> list:
@@ -36,4 +39,5 @@ class Deck:
             Given_Cards.append(self.main_deck[item])
             self.main_deck.remove(self.main_deck[item])
         return Given_Cards
+
 

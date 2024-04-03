@@ -1,4 +1,4 @@
-import telebot, keyboard_bot
+import telebot, keyboard_bot, GAME
 from random import randint
 from telebot import types
 from Bot_idetification import load_config
@@ -12,6 +12,7 @@ bot = telebot.TeleBot(config.tg_bot.token)
 deck = Deck()
 Bot_Game = Bot_Game()
 Player = Player()
+game = GAME.Game()
 #----------------------------------------------------------------
 
 @bot.message_handler(commands=['start'])
@@ -28,10 +29,13 @@ def on_click_start(message):
         rand = randint(0, 1)
         if rand == 0: #Переделать для дальнейших игр
             bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump()))
-            bot.send_message(message.chat.id, LEXICON_RU['step_bot'], Game_Process(message, rand))
-
+            bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
+            deck.first_step(rand)
+            game.change_status()
         else:
-            bot.send_message(message.chat.id, LEXICON_RU['step_yourself'], Game_Process(message, rand))
+            bot.send_message(message.chat.id, LEXICON_RU['step_yourself'])
+            deck.first_step(rand)
+            game.change_status()
     elif message.text == LEXICON_RU['no_button']:
         bot.send_message(message.chat.id, 'Зачем вы тогда открыли игру...')
         bot.send_message(message.chat.id, 'Окей', reply_markup=types.ReplyKeyboardRemove())
@@ -44,14 +48,6 @@ def Game_Start(message):
     Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.need_cards))
     Player.GiveCards(deck.GiveAway_Card(Player.need_cards))
 
-def Game_Process(message, rand: int) -> None:
-    if rand == 0:
-        @bot.callback_query_handler(func=lambda call: call.data)
-        def p():
-            pass
-
-    else:
-        pass
 #bot.set_my_commands() -> after truble
 @bot.message_handler(commands=['help'])
 def help(message):
@@ -65,8 +61,19 @@ def broken(message):
 def photo(message):
     bot.send_message(message.chat.id, LEXICON_RU['/take'])
 
+@bot.message_handler(content_types=['text'], func=lambda f: game.filter == True)
+def condition_bot(rand):
+    print('ok')
+
+def condition_player(rand):
+    pass
+
+
 @bot.message_handler(content_types=['text'])
 def other_text(message):
     bot.send_message(message.chat.id, LEXICON_RU['not_cmd'])
 
+
 bot.infinity_polling()
+
+
