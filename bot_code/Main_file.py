@@ -63,7 +63,7 @@ def photo(message):
 
 @bot.message_handler(content_types=['text'], func=lambda f: game.filter == True)
 def condition_bot(rand):
-    print('ok')
+    pass
 
 def condition_player(rand):
     pass
