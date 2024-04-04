@@ -14,14 +14,14 @@ class Deck:
         self.deck_id: str
         self.main_deck: list
         self.garbage_deck: list
-        self.field: list
+        self.field: list = []
         self.trump_card: str
         self.first_field: int
     def shuffle(self):
         endPoint = "https://deckofcardsapi.com/api/deck/new/shuffle/"
         params = {"deck_count": 1}
         response = requests.get(endPoint, params=params)
-        self.deck_id= response.json()["deck_id"]
+        self.deck_id = response.json()["deck_id"]
     def GetDeck(self):
         Point = f"https://deckofcardsapi.com/api/deck/{self.deck_id}/draw/?count=52"
         self.main_deck = requests.get(Point).json()['cards']
@@ -30,7 +30,7 @@ class Deck:
 
     def first_step(self, number: int):
         self.first_field = number
-    def Return_Trump(self) -> str:
+    def Return_Trump(self):
         return self.trump_card
     def GiveAway_Card(self, need_cards) -> list:
         Given_Cards = []
@@ -39,5 +39,7 @@ class Deck:
             Given_Cards.append(self.main_deck[item])
             self.main_deck.remove(self.main_deck[item])
         return Given_Cards
+    def field_add(self, card: str):
+        self.field.append(card)
 
 

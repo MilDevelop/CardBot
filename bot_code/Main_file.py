@@ -47,7 +47,7 @@ def Game_Start(message):
     bot.send_message(message.chat.id, f'{deck.GetDeck()} - козырь!')
     Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.need_cards))
     Player.GiveCards(deck.GiveAway_Card(Player.need_cards))
-
+    deck.field_add(message.text)
 #bot.set_my_commands() -> after truble
 @bot.message_handler(commands=['help'])
 def help(message):
@@ -61,13 +61,11 @@ def broken(message):
 def photo(message):
     bot.send_message(message.chat.id, LEXICON_RU['/take'])
 
-@bot.message_handler(content_types=['text'], func=lambda f: game.filter == True)
-def condition_bot(rand):
-    pass
-
-def condition_player(rand):
-    pass
-
+@bot.message_handler(func=lambda mes: mes.text in Player.comparative_deck)
+def condition_bot(message):
+    if game.filter == True:
+        deck.field_add(message.text)
+        Player.Player_Attack(message.text)
 
 @bot.message_handler(content_types=['text'])
 def other_text(message):
