@@ -13,6 +13,6 @@ class Player:
                 self.comparative_deck.append(f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}")
     def Player_Attack(self, field):
         index = self.comparative_deck.index(field)
-        self.comparative_deck.pop(field)
-        self.User_deck.pop(self.User_deck[index])
+        self.comparative_deck.pop(index)
+        self.User_deck.pop(index)
 

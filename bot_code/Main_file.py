@@ -66,7 +66,8 @@ def condition_bot(message):
     if game.filter == True:
         deck.field_add(message.text)
         Player.Player_Attack(message.text)
-
+        Bot_Game.protection_bot(message.text, deck)
+        bot.send_message(message.chat.id, 'все было обработано')
 @bot.message_handler(content_types=['text'])
 def other_text(message):
     bot.send_message(message.chat.id, LEXICON_RU['not_cmd'])

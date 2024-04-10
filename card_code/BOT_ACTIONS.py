@@ -1,6 +1,6 @@
 from Additional_Resources.Ieraration import Hierarchy
 from Additional_Resources import lexicon
-from DECK import Deck
+from card_code.DECK import Deck
 class Bot_Game:
     def __init__(self):
         self.Bot_deck: list = []
@@ -22,13 +22,33 @@ class Bot_Game:
                     rang_card[Hierarchy.index(element['value'])] = element
         index = self.Bot_deck.index(rang_card[min(list(rang_card.keys()))])
         self.Bot_deck.remove(rang_card[min(list(rang_card.keys()))])
-        self.comparative_deck.pop(self.comparative_deck[index])
+        self.comparative_deck.pop(self.comparative_deck.index(self.comparative_deck[index]))
         return rang_card[min(list(rang_card.keys()))]['images']['png']
-    def protection_bot(self, attack_card, deck: Deck):
+    def protection_bot(self, attack_card, deck: Deck) -> str:
         attack_status = attack_card[0:len(attack_card)-3]
         attack_mast = attack_card[-1]
         maybe: list = []
+        trump_maybe: list = []
         for iter in self.comparative_deck:
-            if iter[-1] == lexicon.simbol(deck.Return_Trump()) or iter[-1] == attack_mast:
+            if iter[-1] == lexicon.simbol(deck.Return_Trump()):
+                trump_maybe.append(iter)
+            elif iter[-1] == attack_mast:
                 maybe.append(iter)
+        if len(trump_maybe) != 0:
+            test_mass: dict = {} #индексы козырных элементов в иерархии
+            for el in trump_maybe:
+                test_mass[Hierarchy.index(el[0:len(el)-3])] = el
+            ix = test_mass[min(list(test_mass.keys()))]
+            self.Bot_deck.pop(self.comparative_deck.index(ix))
+            self.comparative_deck.pop(self.comparative_deck.index(ix))
+            return ix
+        else:
+            test_mass: dict = {}
+            for el in maybe:
+                if Hierarchy.index(el[0:len(el)-3]) > Hierarchy.index(attack_status):
+                    test_mass[Hierarchy.index(el[0:len(el)-3])] = el
+            ix = test_mass[min(list(test_mass.keys()))]
+            self.Bot_deck.pop(self.comparative_deck.index(ix))
+            self.comparative_deck.pop(self.comparative_deck.index(ix))
+            return ix
 
