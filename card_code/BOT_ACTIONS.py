@@ -24,7 +24,7 @@ class Bot_Game:
         self.Bot_deck.remove(rang_card[min(list(rang_card.keys()))])
         self.comparative_deck.pop(self.comparative_deck.index(self.comparative_deck[index]))
         return rang_card[min(list(rang_card.keys()))]['images']['png']
-    def protection_bot(self, attack_card, deck: Deck) -> str:
+    def protection_bot(self, attack_card, deck: Deck) -> list:
         attack_status = attack_card[0:len(attack_card)-3]
         attack_mast = attack_card[-1]
         maybe: list = []
@@ -39,16 +39,27 @@ class Bot_Game:
             for el in trump_maybe:
                 test_mass[Hierarchy.index(el[0:len(el)-3])] = el
             ix = test_mass[min(list(test_mass.keys()))]
+            photo = None
+            for elem in self.Bot_deck:
+                if elem == self.Bot_deck[self.comparative_deck.index(ix)]:
+                    photo = elem['image']
             self.Bot_deck.pop(self.comparative_deck.index(ix))
             self.comparative_deck.pop(self.comparative_deck.index(ix))
-            return ix
+            trump_maybe.pop(trump_maybe.index(ix))
+            return [ix, photo]
         else:
             test_mass: dict = {}
             for el in maybe:
                 if Hierarchy.index(el[0:len(el)-3]) > Hierarchy.index(attack_status):
                     test_mass[Hierarchy.index(el[0:len(el)-3])] = el
             ix = test_mass[min(list(test_mass.keys()))]
+            photo = None
+            for elem in self.Bot_deck:
+                if elem == self.Bot_deck[self.comparative_deck.index(ix)]:
+                    photo = elem['image']
             self.Bot_deck.pop(self.comparative_deck.index(ix))
             self.comparative_deck.pop(self.comparative_deck.index(ix))
-            return ix
+            maybe.pop(maybe.index(ix))
+            return [ix, photo]
+
 

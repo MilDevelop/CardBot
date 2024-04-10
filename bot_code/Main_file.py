@@ -66,8 +66,12 @@ def condition_bot(message):
     if game.filter == True:
         deck.field_add(message.text)
         Player.Player_Attack(message.text)
-        Bot_Game.protection_bot(message.text, deck)
-        bot.send_message(message.chat.id, 'все было обработано')
+        bot.send_photo(message.chat.id, Bot_Game.protection_bot(message.text, deck)[1], reply_markup=keyboard_bot.Player_field(Player.User_deck))
+        game.filter = False
+    elif game.filter == False:
+        bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump()), reply_markup=keyboard_bot.Player_field(Player.User_deck))
+        Player.Player_Attack(message.text)
+        game.filter = True
 @bot.message_handler(content_types=['text'])
 def other_text(message):
     bot.send_message(message.chat.id, LEXICON_RU['not_cmd'])
