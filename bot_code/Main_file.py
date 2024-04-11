@@ -28,14 +28,14 @@ def on_click_start(message):
                                           'Сейчас вы увидете свои карты', Game_Start(message), reply_markup=keyboard_bot.Player_field(Player.User_deck))
         rand = randint(0, 1)
         if rand == 0: #Переделать для дальнейших игр
-            bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump()))
+            bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump(), deck))
             bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
             deck.first_step(rand)
-            game.change_status()
+            game.filter = True
         else:
             bot.send_message(message.chat.id, LEXICON_RU['step_yourself'])
             deck.first_step(rand)
-            game.change_status()
+            game.filter = False
     elif message.text == LEXICON_RU['no_button']:
         bot.send_message(message.chat.id, 'Зачем вы тогда открыли игру...')
         bot.send_message(message.chat.id, 'Окей', reply_markup=types.ReplyKeyboardRemove())
@@ -63,15 +63,16 @@ def photo(message):
 
 @bot.message_handler(func=lambda mes: mes.text in Player.comparative_deck)
 def condition_bot(message):
-    if game.filter == True:
+    if game.filter == False:
         deck.field_add(message.text)
         Player.Player_Attack(message.text)
         bot.send_photo(message.chat.id, Bot_Game.protection_bot(message.text, deck)[1], reply_markup=keyboard_bot.Player_field(Player.User_deck))
-        game.filter = False
-    elif game.filter == False:
-        bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump()), reply_markup=keyboard_bot.Player_field(Player.User_deck))
+
+    elif game.filter == True:
+        bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump(), deck), reply_markup=keyboard_bot.Player_field(Player.User_deck))
+        deck.field_add(message.text)
         Player.Player_Attack(message.text)
-        game.filter = True
+
 @bot.message_handler(content_types=['text'])
 def other_text(message):
     bot.send_message(message.chat.id, LEXICON_RU['not_cmd'])
