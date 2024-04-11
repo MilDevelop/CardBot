@@ -52,7 +52,7 @@ class Bot_Game:
                 trump_maybe.pop(trump_maybe.index(ix))
                 return [True, photo]
             else:
-                return [False, 0]
+                return [False]
 
         else:
             test_mass: dict = {}
@@ -71,7 +71,4 @@ class Bot_Game:
                 maybe.pop(maybe.index(ix))
                 return [True, photo]
             else:
-                return [False, 0]
-
-
-
+                return [False]

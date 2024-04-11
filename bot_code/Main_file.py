@@ -68,7 +68,7 @@ def condition_bot(message):
         Player.Player_Attack(message.text)
         card_photo = Bot_Game.protection_bot(message.text, deck)
         if card_photo[0] == True:
-            bot.send_photo(message.chat.id, card_photo, reply_markup=keyboard_bot.Player_field(Player.User_deck))
+            bot.send_photo(message.chat.id, card_photo[1], reply_markup=keyboard_bot.Player_field(Player.User_deck))
         else:
             bot.send_message(message.chat.id, "У меня нечем биться")
     elif game.filter == True:
@@ -82,5 +82,3 @@ def other_text(message):
 
 
 bot.infinity_polling()
-
-

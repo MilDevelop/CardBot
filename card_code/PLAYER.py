@@ -15,4 +15,3 @@ class Player:
         index = self.comparative_deck.index(field)
         self.comparative_deck.pop(index)
         self.User_deck.pop(index)
-

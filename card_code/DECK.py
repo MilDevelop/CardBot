@@ -41,5 +41,3 @@ class Deck:
         return Given_Cards
     def field_add(self, card: str):
         self.field.append(card)
-
-
