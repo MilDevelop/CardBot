@@ -66,8 +66,11 @@ def condition_bot(message):
     if game.filter == False:
         deck.field_add(message.text)
         Player.Player_Attack(message.text)
-        bot.send_photo(message.chat.id, Bot_Game.protection_bot(message.text, deck)[1], reply_markup=keyboard_bot.Player_field(Player.User_deck))
-
+        card_photo = Bot_Game.protection_bot(message.text, deck)
+        if card_photo[0] == True:
+            bot.send_photo(message.chat.id, card_photo, reply_markup=keyboard_bot.Player_field(Player.User_deck))
+        else:
+            bot.send_message(message.chat.id, "У меня нечем биться")
     elif game.filter == True:
         bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump(), deck), reply_markup=keyboard_bot.Player_field(Player.User_deck))
         deck.field_add(message.text)
