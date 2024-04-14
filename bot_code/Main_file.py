@@ -27,6 +27,7 @@ def on_click_start(message):
         bot.send_message(message.chat.id, 'Происходит перетасовка карт...'
                                           'Сейчас вы увидете свои карты', Game_Start(message), reply_markup=keyboard_bot.Player_field(Player.User_deck))
         rand = randint(0, 1)
+        rand = 1
         if rand == 0: #Переделать для дальнейших игр
             bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump(), deck))
             bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
@@ -47,7 +48,6 @@ def Game_Start(message):
     bot.send_message(message.chat.id, f'{deck.GetDeck()} - козырь!')
     Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.need_cards))
     Player.GiveCards(deck.GiveAway_Card(Player.need_cards))
-    deck.field_add(message.text)
 #bot.set_my_commands() -> after truble
 @bot.message_handler(commands=['help'])
 def help(message):
@@ -63,18 +63,25 @@ def photo(message):
 
 @bot.message_handler(func=lambda mes: mes.text in Player.comparative_deck)
 def condition_bot(message):
+    print(deck.field)
     if game.filter == False:
-        deck.field_add(message.text)
-        Player.Player_Attack(message.text)
-        card_photo = Bot_Game.protection_bot(message.text, deck)
-        if card_photo[0] == True:
-            bot.send_photo(message.chat.id, card_photo[1], reply_markup=keyboard_bot.Player_field(Player.User_deck))
+        if deck.check_similar(message.text) or len(deck.field) <= 1:
+            Player.Player_field(message.text, deck)
+            card_photo = Bot_Game.protection_bot(message.text, deck)
+            if card_photo[0] == True:
+                bot.send_photo(message.chat.id, card_photo[1], reply_markup=keyboard_bot.Player_field(Player.User_deck))
+            else:
+                bot.send_message(message.chat.id, "У меня нечем биться")
+                #/broken Бито!
+                #/take Беру!
         else:
-            bot.send_message(message.chat.id, "У меня нечем биться")
+            bot.send_message(message.chat.id, "Шуллер!")
     elif game.filter == True:
-        bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump(), deck), reply_markup=keyboard_bot.Player_field(Player.User_deck))
-        deck.field_add(message.text)
-        Player.Player_Attack(message.text)
+        bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
+        bot_attack = Bot_Game.Atack_Bot(deck.Return_Trump(), deck)
+        bot.send_photo(message.chat.id, bot_attack, reply_markup=keyboard_bot.Player_field(Player.User_deck))
+        Player.Player_field(message.text, deck)
+        game.filter = False
 
 @bot.message_handler(content_types=['text'])
 def other_text(message):

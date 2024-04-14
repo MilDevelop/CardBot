@@ -41,3 +41,9 @@ class Deck:
         return Given_Cards
     def field_add(self, card: str):
         self.field.append(card)
+
+    def check_similar(self, card: str):
+        for iter in self.field:
+            if card[0:(len(card) - 3)] == iter[0:(len(iter) - 3)]:
+                return True
+        return False

@@ -21,7 +21,7 @@ class Bot_Game:
                 if element['value'] in Hierarchy:
                     rang_card[Hierarchy.index(element['value'])] = element
         index = self.Bot_deck.index(rang_card[min(list(rang_card.keys()))])
-        deck.field_add(self.Bot_deck[index])
+        deck.field_add(f"{self.Bot_deck[index]['value']}-{lexicon.simbol(self.Bot_deck[index]['suit'])}")
         self.Bot_deck.remove(rang_card[min(list(rang_card.keys()))])
         self.comparative_deck.pop(self.comparative_deck.index(self.comparative_deck[index]))
         return rang_card[min(list(rang_card.keys()))]['images']['png']
@@ -46,7 +46,7 @@ class Bot_Game:
                 for elem in self.Bot_deck:
                     if elem == self.Bot_deck[self.comparative_deck.index(ix)]:
                         photo = elem['image']
-                deck.field_add(self.Bot_deck[self.comparative_deck.index(ix)])
+                deck.field_add(f"{self.Bot_deck[self.comparative_deck.index(ix)]['value']}-{lexicon.simbol(self.Bot_deck[self.comparative_deck.index(ix)]['suit'])}")
                 self.Bot_deck.pop(self.comparative_deck.index(ix))
                 self.comparative_deck.pop(self.comparative_deck.index(ix))
                 trump_maybe.pop(trump_maybe.index(ix))
@@ -65,7 +65,7 @@ class Bot_Game:
                 for elem in self.Bot_deck:
                     if elem == self.Bot_deck[self.comparative_deck.index(ix)]:
                         photo = elem['image']
-                deck.field_add(self.Bot_deck[self.comparative_deck.index(ix)])
+                deck.field_add(f"{self.Bot_deck[self.comparative_deck.index(ix)]['value']}-{lexicon.simbol(self.Bot_deck[self.comparative_deck.index(ix)]['suit'])}")
                 self.Bot_deck.pop(self.comparative_deck.index(ix))
                 self.comparative_deck.pop(self.comparative_deck.index(ix))
                 maybe.pop(maybe.index(ix))
