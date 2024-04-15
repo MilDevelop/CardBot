@@ -56,6 +56,7 @@ def help(message):
 @bot.message_handler(commands=['broken'])
 def broken(message):
     bot.send_message(message.chat.id, LEXICON_RU['/broken'])
+    game.filter = True
 
 @bot.message_handler(commands=['take'])
 def photo(message):
@@ -71,9 +72,11 @@ def condition_bot(message):
             if card_photo[0] == True:
                 bot.send_photo(message.chat.id, card_photo[1], reply_markup=keyboard_bot.Player_field(Player.User_deck))
             else:
-                bot.send_message(message.chat.id, "У меня нечем биться")
-                #/broken Бито!
-                #/take Беру!
+                bot.send_message(message.chat.id, "У меня нечем биться, беру")
+                Bot_Game.bot_take(deck, Player)
+                deck.field.clear()
+                Player.GiveCards(deck.GiveAway_Card(Player.need_cards))
+                bot.send_message(message.chat.id, "Получите свои карты из колоды", reply_markup=keyboard_bot.Player_field(Player.User_deck))
         else:
             bot.send_message(message.chat.id, "Шуллер!")
     elif game.filter == True:

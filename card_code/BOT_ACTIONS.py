@@ -1,6 +1,7 @@
 from Additional_Resources.Ieraration import Hierarchy
 from Additional_Resources import lexicon
 from card_code.DECK import Deck
+from card_code.PLAYER import Player
 class Bot_Game:
     def __init__(self):
         self.Bot_deck: list = []
@@ -24,7 +25,7 @@ class Bot_Game:
         deck.field_add(f"{self.Bot_deck[index]['value']}-{lexicon.simbol(self.Bot_deck[index]['suit'])}")
         self.Bot_deck.remove(rang_card[min(list(rang_card.keys()))])
         self.comparative_deck.pop(self.comparative_deck.index(self.comparative_deck[index]))
-        return rang_card[min(list(rang_card.keys()))]['images']['png']
+        return rang_card[min(list(rang_card.keys()))]['image']
 
     def protection_bot(self, attack_card, deck: Deck) -> list:
         attack_status = attack_card[0:len(attack_card)-3]
@@ -72,3 +73,16 @@ class Bot_Game:
                 return [True, photo]
             else:
                 return [False]
+    def bot_take(self, deck: Deck, player: Player) -> None:
+        for item in deck.field:
+            if type(item) == dict():
+                print("ULYFLUYFYLUGLIGILUH:OII:OJ")
+                self.Bot_deck.append(item)
+                self.comparative_deck.append(f"{item['value']}-{lexicon.simbol(item['suit'])}")
+            else:
+                dictionary: dict = {}
+                dictionary['value'] = item[-2:]
+                dictionary['suit'] = item[0:len(item)-3]
+                dictionary['image'] = player.images[item]
+                self.Bot_deck.append(dictionary)
+                self.comparative_deck.append(item)

@@ -4,6 +4,7 @@ class Player:
     def __init__(self):
         self.User_deck: list = []
         self.comparative_deck: list = []
+        self.images: dict = {}
         self.need_cards = 6 - len(self.User_deck)
     def GiveCards(self, main_deck: list):
         if self.need_cards <= 0:
@@ -25,5 +26,6 @@ class Player:
     def Player_field(self, field, deck: Deck):
         deck.field_add(field)
         index = self.comparative_deck.index(field)
+        self.images[self.comparative_deck[index]] = self.User_deck[index]['image']
         self.comparative_deck.pop(index)
         self.User_deck.pop(index)
