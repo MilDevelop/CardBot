@@ -6,6 +6,7 @@ class Bot_Game:
     def __init__(self):
         self.Bot_deck: list = []
         self.comparative_deck: list = []
+        self.images_bot: dict = {}
         self.need_cards = 6 - len(self.Bot_deck)
     def GiveCards(self, main_deck: list):
         if self.need_cards <= 0:
@@ -14,6 +15,7 @@ class Bot_Game:
             for i in range(self.need_cards):
                 self.Bot_deck.append(main_deck[i])
                 self.comparative_deck.append(f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}")
+                self.images_bot[f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}"] = main_deck[i]['image']
 
     def Atack_Bot(self, trump: str, deck: Deck):
         rang_card: dict = {}
@@ -75,14 +77,17 @@ class Bot_Game:
                 return [False]
     def bot_take(self, deck: Deck, player: Player) -> None:
         for item in deck.field:
-            if type(item) == dict():
-                print("ULYFLUYFYLUGLIGILUH:OII:OJ")
-                self.Bot_deck.append(item)
-                self.comparative_deck.append(f"{item['value']}-{lexicon.simbol(item['suit'])}")
+            if deck.field.index(item) % 2 == 0:
+                print(f"я добавляю в сывою колоду {item}")
+                dictionary: dict = {}
+                dictionary['value'] = item[0:len(item)-3]
+                dictionary['suit'] = item[-2:]
+                dictionary['image'] = player.images[item]
             else:
                 dictionary: dict = {}
-                dictionary['value'] = item[-2:]
-                dictionary['suit'] = item[0:len(item)-3]
-                dictionary['image'] = player.images[item]
-                self.Bot_deck.append(dictionary)
-                self.comparative_deck.append(item)
+                dictionary['value'] = item[0:len(item) - 3]
+                dictionary['suit'] = item[-2:]
+                dictionary['image'] = self.images_bot[item]
+
+            self.Bot_deck.append(dictionary)
+            self.comparative_deck.append(item)
