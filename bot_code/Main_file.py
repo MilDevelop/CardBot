@@ -56,6 +56,10 @@ def help(message):
 @bot.message_handler(commands=['broken'])
 def broken(message):
     bot.send_message(message.chat.id, LEXICON_RU['/broken'])
+    deck.garbage_deck = deck.field.copy()
+    deck.field.clear()
+    Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.need_cards))
+    Player.GiveCards(deck.GiveAway_Card(Player.need_cards))
     game.filter = True
 
 @bot.message_handler(commands=['take'])

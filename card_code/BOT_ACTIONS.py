@@ -9,6 +9,7 @@ class Bot_Game:
         self.images_bot: dict = {}
         self.need_cards = 6 - len(self.Bot_deck)
     def GiveCards(self, main_deck: list):
+        self.need_cards = 6 - len(self.Bot_deck)
         if self.need_cards <= 0:
             pass
         else:

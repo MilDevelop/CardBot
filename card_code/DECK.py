@@ -13,7 +13,7 @@ class Deck:
     def __init__(self):
         self.deck_id: str
         self.main_deck: list
-        self.garbage_deck: list
+        self.garbage_deck: list = []
         self.field: list = []
         self.trump_card: str
         self.first_field: int

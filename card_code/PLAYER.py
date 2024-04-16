@@ -5,8 +5,9 @@ class Player:
         self.User_deck: list = []
         self.comparative_deck: list = []
         self.images: dict = {}
-        self.need_cards = 6 - len(self.User_deck)
+        self.need_cards: int = 6 - len(self.User_deck)
     def GiveCards(self, main_deck: list):
+        self.need_cards = 6 - len(self.User_deck)
         if self.need_cards <= 0:
             pass
         else:
