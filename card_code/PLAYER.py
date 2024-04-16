@@ -15,7 +15,7 @@ class Player:
                 self.User_deck.append(main_deck[i])
                 self.comparative_deck.append(f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}")
 
-    def check_field(self, given_card: str, field, deck: Deck) -> bool:
+    def check_field_player(self, given_card: str, field, deck: Deck) -> bool: #what is it???
         if field[-2:] == lexicon.simbol(deck.Return_Trump()):
             return True
         elif field[-2:] == given_card[-2:]:

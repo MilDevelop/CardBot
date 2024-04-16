@@ -18,17 +18,29 @@ class Bot_Game:
                 self.comparative_deck.append(f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}")
                 self.images_bot[f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}"] = main_deck[i]['image']
 
+    def check_similar(self, card: str, deck: Deck):
+        for iter in deck.field:
+            if card[0:(len(card) - 3)] == iter[0:(len(iter) - 3)]:
+                return True
+        return False
+
     def Atack_Bot(self, trump: str, deck: Deck):
         rang_card: dict = {}
         for element in self.Bot_deck:
             if element['suit'] != trump:
-                if element['value'] in Hierarchy:
+                if element['value'] in Hierarchy and self.check_similar(f"{element['value']}-{lexicon.simbol(element['suit'])}", deck):
                     rang_card[Hierarchy.index(element['value'])] = element
-        index = self.Bot_deck.index(rang_card[min(list(rang_card.keys()))])
-        deck.field_add(f"{self.Bot_deck[index]['value']}-{lexicon.simbol(self.Bot_deck[index]['suit'])}")
-        self.Bot_deck.remove(rang_card[min(list(rang_card.keys()))])
-        self.comparative_deck.pop(self.comparative_deck.index(self.comparative_deck[index]))
-        return rang_card[min(list(rang_card.keys()))]['image']
+            elif element['suit'] == trump:
+                if element['value'] in Hierarchy and self.check_similar(f"{element['value']}-{lexicon.simbol(element['suit'])}", deck):
+                    rang_card[Hierarchy.index(element['value'])] = element
+        if len(list(rang_card.keys())) != 0:
+            index = self.Bot_deck.index(rang_card[min(list(rang_card.keys()))])
+            deck.field_add(f"{self.Bot_deck[index]['value']}-{lexicon.simbol(self.Bot_deck[index]['suit'])}")
+            self.Bot_deck.remove(rang_card[min(list(rang_card.keys()))])
+            self.comparative_deck.pop(self.comparative_deck.index(self.comparative_deck[index]))
+            return [True, rang_card[min(list(rang_card.keys()))]['image']]
+        else:
+            return [False]
 
     def protection_bot(self, attack_card, deck: Deck) -> list:
         attack_status = attack_card[0:len(attack_card)-3]

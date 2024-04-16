@@ -61,7 +61,12 @@ def broken(message):
     Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.need_cards))
     Player.GiveCards(deck.GiveAway_Card(Player.need_cards))
     game.filter = True
-
+    bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
+    bot_attack = Bot_Game.Atack_Bot(deck.Return_Trump(), deck)
+    if bot_attack[0] == True:        #FIX HERE!!!!!!!!
+        bot.send_photo(message.chat.id, bot_attack[1], reply_markup=keyboard_bot.Player_field(Player.User_deck))
+    else:
+        bot.send_message(message.chat.id, "Нечего подктдывать, Беру!")
 @bot.message_handler(commands=['take'])
 def photo(message):
     bot.send_message(message.chat.id, LEXICON_RU['/take'])
@@ -84,10 +89,7 @@ def condition_bot(message):
         else:
             bot.send_message(message.chat.id, "Шуллер!")
     elif game.filter == True:
-        bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
-        bot_attack = Bot_Game.Atack_Bot(deck.Return_Trump(), deck)
-        bot.send_photo(message.chat.id, bot_attack, reply_markup=keyboard_bot.Player_field(Player.User_deck))
-        Player.Player_field(message.text, deck)
+        Player.Player_field(message.text, deck) #пока полагаемся на разумность игрока
         game.filter = False
 
 @bot.message_handler(content_types=['text'])
