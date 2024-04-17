@@ -1,28 +1,28 @@
 from Additional_Resources.Ieraration import Hierarchy
 from Additional_Resources import lexicon
 from card_code.DECK import Deck
-from card_code.PLAYER import Player
 class Bot_Game:
     def __init__(self):
         self.Bot_deck: list = []
         self.comparative_deck: list = []
-        self.images_bot: dict = {}
         self.need_cards = 6 - len(self.Bot_deck)
     def GiveCards(self, main_deck: list):
         self.need_cards = 6 - len(self.Bot_deck)
         if self.need_cards <= 0:
             pass
         else:
+            print(f"Нужно каарт боту----{self.need_cards}")
             for i in range(self.need_cards):
                 self.Bot_deck.append(main_deck[i])
                 self.comparative_deck.append(f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}")
-                self.images_bot[f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}"] = main_deck[i]['image']
 
     def check_similar(self, card: str, deck: Deck):
-        for iter in deck.field:
-            if card[0:(len(card) - 3)] == iter[0:(len(iter) - 3)]:
-                return True
-        return False
+        if len(deck.field) > 1:
+            for iter in deck.field:
+                if card[0:(len(card) - 3)] == iter[0:(len(iter) - 3)]:
+                    return True
+            return False
+        return True
 
     def Atack_Bot(self, trump: str, deck: Deck):
         rang_card: dict = {}
@@ -88,19 +88,11 @@ class Bot_Game:
                 return [True, photo]
             else:
                 return [False]
-    def bot_take(self, deck: Deck, player: Player) -> None:
+    def bot_take(self, deck: Deck) -> None:
         for item in deck.field:
-            if deck.field.index(item) % 2 == 0:
-                print(f"я добавляю в сывою колоду {item}")
-                dictionary: dict = {}
-                dictionary['value'] = item[0:len(item)-3]
-                dictionary['suit'] = item[-2:]
-                dictionary['image'] = player.images[item]
-            else:
-                dictionary: dict = {}
-                dictionary['value'] = item[0:len(item) - 3]
-                dictionary['suit'] = item[-2:]
-                dictionary['image'] = self.images_bot[item]
-
+            dictionary: dict = {}
+            dictionary['value'] = item[0:len(item)-3]
+            dictionary['suit'] = item[-2:]
+            dictionary['image'] = deck.images[item]
             self.Bot_deck.append(dictionary)
             self.comparative_deck.append(item)

@@ -4,13 +4,13 @@ class Player:
     def __init__(self):
         self.User_deck: list = []
         self.comparative_deck: list = []
-        self.images: dict = {}
         self.need_cards: int = 6 - len(self.User_deck)
     def GiveCards(self, main_deck: list):
         self.need_cards = 6 - len(self.User_deck)
         if self.need_cards <= 0:
             pass
         else:
+            print(f"Нужно каарт игроку----{self.need_cards}")
             for i in range(self.need_cards):
                 self.User_deck.append(main_deck[i])
                 self.comparative_deck.append(f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}")
@@ -27,6 +27,14 @@ class Player:
     def Player_field(self, field, deck: Deck):
         deck.field_add(field)
         index = self.comparative_deck.index(field)
-        self.images[self.comparative_deck[index]] = self.User_deck[index]['image']
         self.comparative_deck.pop(index)
         self.User_deck.pop(index)
+
+    def player_take(self, deck: Deck) -> None:
+        for item in deck.field:
+            dictionary: dict = {}
+            dictionary['value'] = item[0:len(item) - 3]
+            dictionary['suit'] = item[-2:]
+            dictionary['image'] = deck.images[item]
+            self.User_deck.append(dictionary)
+            self.comparative_deck.append(item)

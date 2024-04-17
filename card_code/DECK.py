@@ -9,6 +9,7 @@
 #         return user_mast[-1] == bot_mast.lower()
 import requests, pprint
 from random import choice
+from Additional_Resources.lexicon import simbol
 class Deck:
     def __init__(self):
         self.deck_id: str
@@ -17,6 +18,7 @@ class Deck:
         self.field: list = []
         self.trump_card: str
         self.first_field: int
+        self.images: dict = {}
     def shuffle(self):
         endPoint = "https://deckofcardsapi.com/api/deck/new/shuffle/"
         params = {"deck_count": 1}
@@ -26,6 +28,8 @@ class Deck:
         Point = f"https://deckofcardsapi.com/api/deck/{self.deck_id}/draw/?count=52"
         self.main_deck = requests.get(Point).json()['cards']
         self.trump_card = choice(['HEARTS', 'DIAMONDS', 'SPADES', 'CLUBS'])
+        for item in self.main_deck:
+            self.images[f"{item['value']}-{simbol(item['suit'])}"] = item['image']
         return self.trump_card
 
     def first_step(self, number: int):
@@ -37,7 +41,7 @@ class Deck:
         for item in range(need_cards):
             pprint.pprint(self.main_deck[item])
             Given_Cards.append(self.main_deck[item])
-            self.main_deck.remove(self.main_deck[item])
+            self.main_deck.pop(item)
         return Given_Cards
     def field_add(self, card: str):
         self.field.append(card)
