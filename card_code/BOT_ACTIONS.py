@@ -11,8 +11,10 @@ class Bot_Game:
         if self.need_cards <= 0:
             pass
         else:
-            print(f"Нужно каарт боту----{self.need_cards}")
+            for it in main_deck:
+                print("BLYYYYYYYYYAAA:", it)
             for i in range(self.need_cards):
+                print(f"ЭТО АЙ{i}")
                 self.Bot_deck.append(main_deck[i])
                 self.comparative_deck.append(f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}")
 
@@ -96,3 +98,7 @@ class Bot_Game:
             dictionary['image'] = deck.images[item]
             self.Bot_deck.append(dictionary)
             self.comparative_deck.append(item)
+
+    def NEED_CARDS(self) -> int:
+        self.need_cards = 6 - len(self.Bot_deck)
+        return self.need_cards

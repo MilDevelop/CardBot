@@ -46,8 +46,8 @@ def on_click_start(message):
 def Game_Start(message):
     deck.shuffle()
     bot.send_message(message.chat.id, f'{deck.GetDeck()} - козырь!')
-    Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.need_cards))
-    Player.GiveCards(deck.GiveAway_Card(Player.need_cards))
+    Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
+    Player.GiveCards(deck.GiveAway_Card(Player.NEED_CARDS()))
 #bot.set_my_commands() -> after truble
 @bot.message_handler(commands=['help'])
 def help(message):
@@ -58,8 +58,8 @@ def broken(message):
     bot.send_message(message.chat.id, LEXICON_RU['/broken'])
     deck.garbage_deck = deck.field.copy()
     deck.field.clear()
-    Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.need_cards))
-    Player.GiveCards(deck.GiveAway_Card(Player.need_cards))
+    Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
+    Player.GiveCards(deck.GiveAway_Card(Player.NEED_CARDS()))
     game.filter = True
     bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
     bot_attack = Bot_Game.Atack_Bot(deck.Return_Trump(), deck)
@@ -71,15 +71,16 @@ def broken(message):
         game.filter = False
         deck.garbage_deck = deck.field.copy()
         deck.field.clear()
-        Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.need_cards))
-        Player.GiveCards(deck.GiveAway_Card(Player.need_cards))
+        Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
+        Player.GiveCards(deck.GiveAway_Card(Player.NEED_CARDS()))
         bot.send_message(message.chat.id, "Получите свои карты",
                          reply_markup=keyboard_bot.Player_field(Player.User_deck))
 @bot.message_handler(commands=['take'])
 def take(message):
     bot.send_message(message.chat.id, LEXICON_RU['/take'])
     Player.player_take(deck)
-    Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.need_cards))
+    deck.field.clear()
+    Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
 @bot.message_handler(func=lambda mes: mes.text in Player.comparative_deck)
 def condition_bot(message):
     print(len(deck.main_deck))
@@ -93,7 +94,7 @@ def condition_bot(message):
                 bot.send_message(message.chat.id, "У меня нечем биться, беру")
                 Bot_Game.bot_take(deck)
                 deck.field.clear()
-                Player.GiveCards(deck.GiveAway_Card(Player.need_cards))
+                Player.GiveCards(deck.GiveAway_Card(Player.NEED_CARDS()))
                 bot.send_message(message.chat.id, "Получите свои карты из колоды", reply_markup=keyboard_bot.Player_field(Player.User_deck))
         else:
             bot.send_message(message.chat.id, "Шуллер!")
@@ -109,8 +110,8 @@ def condition_bot(message):
             game.filter = False
             deck.garbage_deck = deck.field.copy()
             deck.field.clear()
-            Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.need_cards))
-            Player.GiveCards(deck.GiveAway_Card(Player.need_cards))
+            Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
+            Player.GiveCards(deck.GiveAway_Card(Player.NEED_CARDS()))
             bot.send_message(message.chat.id, "Получите свои карты", reply_markup=keyboard_bot.Player_field(Player.User_deck))
 @bot.message_handler(content_types=['text'])
 def other_text(message):

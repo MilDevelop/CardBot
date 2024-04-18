@@ -36,13 +36,16 @@ class Deck:
         self.first_field = number
     def Return_Trump(self):
         return self.trump_card
-    def GiveAway_Card(self, need_cards) -> list:
-        Given_Cards = []
-        for item in range(need_cards):
-            pprint.pprint(self.main_deck[item])
-            Given_Cards.append(self.main_deck[item])
-            self.main_deck.pop(item)
-        return Given_Cards
+    def GiveAway_Card(self, need_cards):
+        if need_cards >= 1:
+            Given_Cards = []
+            for item in range(need_cards):
+                pprint.pprint(self.main_deck[item])
+                Given_Cards.append(self.main_deck[item])
+                self.main_deck.remove(self.main_deck[item])
+            return Given_Cards
+        else:
+            pass
     def field_add(self, card: str):
         self.field.append(card)
 

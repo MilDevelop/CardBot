@@ -11,7 +11,10 @@ class Player:
             pass
         else:
             print(f"Нужно каарт игроку----{self.need_cards}")
+            for it in main_deck:
+                print("BLYYYYYYYYYAAA-PLayer:", it)
             for i in range(self.need_cards):
+                print(f"I for player - {i}")
                 self.User_deck.append(main_deck[i])
                 self.comparative_deck.append(f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}")
 
@@ -38,3 +41,6 @@ class Player:
             dictionary['image'] = deck.images[item]
             self.User_deck.append(dictionary)
             self.comparative_deck.append(item)
+    def NEED_CARDS(self) -> int:
+        self.need_cards = 6 - len(self.User_deck)
+        return self.need_cards
