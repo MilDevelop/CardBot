@@ -81,6 +81,7 @@ def take(message):
     Player.player_take(deck)
     deck.field.clear()
     Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
+    bot.send_message(message.chat.id, "Игра разворачивается с новой силой!", reply_markup=keyboard_bot.Player_field(Player.User_deck))
 @bot.message_handler(func=lambda mes: mes.text in Player.comparative_deck)
 def condition_bot(message):
     print(len(deck.main_deck))
