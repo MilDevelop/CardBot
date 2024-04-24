@@ -57,7 +57,8 @@ class Bot_Game:
         if len(trump_maybe) != 0:
             test_mass: dict = {} #индексы козырных элементов в иерархии
             for el in trump_maybe:
-                test_mass[Hierarchy.index(el[0:len(el)-3])] = el
+                if Hierarchy.index(el[0:len(el)-3]) > Hierarchy.index(attack_status):
+                    test_mass[Hierarchy.index(el[0:len(el)-3])] = el
             if len(list(test_mass.keys())) != 0:
                 ix = test_mass[min(list(test_mass.keys()))]
                 photo = None
