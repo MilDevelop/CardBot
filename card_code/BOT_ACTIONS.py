@@ -11,10 +11,7 @@ class Bot_Game:
         if self.need_cards <= 0:
             pass
         else:
-            for it in main_deck:
-                print("BLYYYYYYYYYAAA:", it)
             for i in range(self.need_cards):
-                print(f"ЭТО АЙ{i}")
                 self.Bot_deck.append(main_deck[i])
                 self.comparative_deck.append(f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}")
 
@@ -95,7 +92,7 @@ class Bot_Game:
         for item in deck.field:
             dictionary: dict = {}
             dictionary['value'] = item[0:len(item)-3]
-            dictionary['suit'] = item[-2:]
+            dictionary['suit'] = lexicon.ober_simbol(item[-2:])
             dictionary['image'] = deck.images[item]
             self.Bot_deck.append(dictionary)
             self.comparative_deck.append(item)

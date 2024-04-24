@@ -10,6 +10,6 @@ def first_keyboard():
 def Player_field(mass_card: list):
     markup = types.ReplyKeyboardMarkup()
     for i in range(len(mass_card)):
-        mark = types.KeyboardButton(f"{mass_card[i]['value']}-{simbol(mass_card[i]['suit'])}") #фиксить твот тут примерно
+        mark = types.KeyboardButton(f"{mass_card[i][0:len(mass_card[i])-3]}-{mass_card[i][-2:]}") #фиксить твот тут примерно
         markup.row(mark)
     return markup
