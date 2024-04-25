@@ -27,7 +27,6 @@ def on_click_start(message):
         bot.send_message(message.chat.id, 'Происходит перетасовка карт...'
                                           'Сейчас вы увидете свои карты', Game_Start(message), reply_markup=keyboard_bot.Player_field(Player.comparative_deck))
         rand = randint(0, 1)
-        rand = 1
         if rand == 0: #Переделать для дальнейших игр
             bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump(), deck))
             bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
@@ -48,19 +47,8 @@ def Game_Start(message):
     bot.send_message(message.chat.id, f'{deck.GetDeck()} - козырь!')
     Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
     Player.GiveCards(deck.GiveAway_Card(Player.NEED_CARDS()))
-#bot.set_my_commands() -> after truble
-@bot.message_handler(commands=['help'])
-def help(message):
-     bot.send_message(message.chat.id, LEXICON_RU['/help'])
 
-@bot.message_handler(commands=['broken'])
-def broken(message):
-    bot.send_message(message.chat.id, LEXICON_RU['/broken'])
-    deck.garbage_deck = deck.field.copy()
-    deck.field.clear()
-    Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
-    Player.GiveCards(deck.GiveAway_Card(Player.NEED_CARDS()))
-    game.filter = True
+def bot_brokenCMD_actions(message):
     bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
     bot_attack = Bot_Game.Atack_Bot(deck.Return_Trump(), deck)
     if bot_attack[0] == True:
@@ -74,31 +62,44 @@ def broken(message):
         Player.GiveCards(deck.GiveAway_Card(Player.NEED_CARDS()))
         bot.send_message(message.chat.id, "Получите свои карты",
                          reply_markup=keyboard_bot.Player_field(Player.comparative_deck))
+def bot_takeCMD_actions(message):
+    bot.send_message(message.chat.id, "Игра разворачивается с новой силой!",
+                     reply_markup=keyboard_bot.Player_field(Player.comparative_deck))
+    bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
+    bot_attack = Bot_Game.Atack_Bot(deck.Return_Trump(), deck)
+    if bot_attack[0] == True:  # maybe
+        bot.send_photo(message.chat.id, bot_attack[1])
+    game.filter = True
+
+def check_GamePolling():
+    if len(deck.main_deck) <= 0:
+        return 0
+    return 1
+#------------------------------------------------------------------------------------------------
+#bot.set_my_commands() -> after truble
+@bot.message_handler(commands=['help'])
+def help(message):
+     bot.send_message(message.chat.id, LEXICON_RU['/help'])
+
+@bot.message_handler(commands=['broken'])
+def broken(message):
+    bot.send_message(message.chat.id, LEXICON_RU['/broken'])
+    deck.garbage_deck = deck.field.copy()
+    deck.field.clear()
+    Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
+    Player.GiveCards(deck.GiveAway_Card(Player.NEED_CARDS()))
+    game.filter = True
+    bot_brokenCMD_actions(message)
 @bot.message_handler(commands=['take'])
 def take(message):
     bot.send_message(message.chat.id, LEXICON_RU['/take'])
     Player.player_take(deck)
-    deck.field.clear()  # SHIT...
+    deck.field.clear()
     Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
-    bot.send_message(message.chat.id, "Игра разворачивается с новой силой!", reply_markup=keyboard_bot.Player_field(Player.comparative_deck))
-    bot_attack = Bot_Game.Atack_Bot(deck.Return_Trump(), deck)
-    if bot_attack[0] == True:
-        bot.send_photo(message.chat.id, bot_attack[1])
-    else:
-        bot.send_message(message.chat.id, "Нечего подктдывать, Бито!")
-        # ----------
-        game.filter = False
-        deck.garbage_deck = deck.field.copy()
-        deck.field.clear()
-        Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
-        Player.GiveCards(deck.GiveAway_Card(Player.NEED_CARDS()))
-        bot.send_message(message.chat.id, "Получите свои карты",
-                         reply_markup=keyboard_bot.Player_field(Player.comparative_deck))
-    game.filter = True
+    bot_takeCMD_actions(message)
 
 @bot.message_handler(func=lambda mes: mes.text in Player.comparative_deck and game.filter == False)
 def condition_bot_protection(message):
-    print("cards in deck:", len(deck.main_deck))
     if deck.check_similar(message.text) or len(deck.field) <= 1:
         Player.Player_field(message.text, deck)
         card_photo = Bot_Game.protection_bot(message.text, deck)
@@ -110,6 +111,7 @@ def condition_bot_protection(message):
             deck.field.clear()
             Player.GiveCards(deck.GiveAway_Card(Player.NEED_CARDS()))
             bot.send_message(message.chat.id, "Получите свои карты из колоды", reply_markup=keyboard_bot.Player_field(Player.comparative_deck))
+            bot.send_message(message.chat.id, LEXICON_RU['step_yourself'])
     else:
         bot.send_message(message.chat.id, "Шуллер!")
 @bot.message_handler(func=lambda mes: mes.text in Player.comparative_deck and game.filter == True)
@@ -120,13 +122,13 @@ def condition_bot_attack(message):
         bot.send_photo(message.chat.id, bot_attack[1], reply_markup=keyboard_bot.Player_field(Player.comparative_deck))
     else:
         bot.send_message(message.chat.id, "Нечего подктдывать, Бито!")
-        #----------
         game.filter = False
         deck.garbage_deck = deck.field.copy()
         deck.field.clear()
         Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
         Player.GiveCards(deck.GiveAway_Card(Player.NEED_CARDS()))
         bot.send_message(message.chat.id, "Получите свои карты", reply_markup=keyboard_bot.Player_field(Player.comparative_deck))
+        bot.send_message(message.chat.id, LEXICON_RU['step_yourself'])
 @bot.message_handler(content_types=['text'])
 def other_text(message):
     bot.send_message(message.chat.id, LEXICON_RU['not_cmd'])
