@@ -15,7 +15,6 @@ Player = Player()
 game = GAME.Game()
 bot_attack = [False, False]
 #----------------------------------------------------------------
-
 @bot.message_handler(commands=['start'])
 def start(message):
     bot.send_message(message.chat.id, LEXICON_RU['/start'], reply_markup=keyboard_bot.first_keyboard())
@@ -79,10 +78,22 @@ def broken(message):
 def take(message):
     bot.send_message(message.chat.id, LEXICON_RU['/take'])
     Player.player_take(deck)
-    deck.field.clear()
+    deck.field.clear()  # SHIT...
     Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
     bot.send_message(message.chat.id, "Игра разворачивается с новой силой!", reply_markup=keyboard_bot.Player_field(Player.comparative_deck))
-    Bot_Game.Atack_Bot(deck.Return_Trump(), deck)
+    bot_attack = Bot_Game.Atack_Bot(deck.Return_Trump(), deck)
+    if bot_attack[0] == True:
+        bot.send_photo(message.chat.id, bot_attack[1])
+    else:
+        bot.send_message(message.chat.id, "Нечего подктдывать, Бито!")
+        # ----------
+        game.filter = False
+        deck.garbage_deck = deck.field.copy()
+        deck.field.clear()
+        Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
+        Player.GiveCards(deck.GiveAway_Card(Player.NEED_CARDS()))
+        bot.send_message(message.chat.id, "Получите свои карты",
+                         reply_markup=keyboard_bot.Player_field(Player.comparative_deck))
     game.filter = True
 
 @bot.message_handler(func=lambda mes: mes.text in Player.comparative_deck and game.filter == False)
