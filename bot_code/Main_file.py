@@ -71,10 +71,6 @@ def bot_takeCMD_actions(message):
         bot.send_photo(message.chat.id, bot_attack[1])
     game.filter = True
 
-def check_GamePolling():
-    if len(deck.main_deck) <= 0:
-        return 0
-    return 1
 #------------------------------------------------------------------------------------------------
 #bot.set_my_commands() -> after truble
 @bot.message_handler(commands=['help'])
