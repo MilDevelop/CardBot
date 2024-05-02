@@ -47,11 +47,11 @@ class Bot_Game:
         maybe: list = []
         trump_maybe: list = []
         for iter in self.comparative_deck: #?
-            if iter[-2:] == lexicon.simbol(deck.Return_Trump()):
+            if iter[-2:] == lexicon.simbol(deck.Return_Trump()) and iter[-2:] == attack_mast:
                 trump_maybe.append(iter)
-            elif iter[-2:] == attack_mast:
+            elif iter[-2:] == attack_mast and Hierarchy.index(iter[0:len(iter)-3]) > Hierarchy.index(attack_status):
                 maybe.append(iter)
-        if len(trump_maybe) != 0:
+        if len(trump_maybe) != 0 and len(maybe) == 0:
             test_mass: dict = {} #индексы козырных элементов в иерархии
             for el in trump_maybe:
                 if Hierarchy.index(el[0:len(el)-3]) > Hierarchy.index(attack_status):

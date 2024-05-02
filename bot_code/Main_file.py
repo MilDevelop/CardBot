@@ -28,7 +28,7 @@ def on_click_start(message):
                                           'Сейчас вы увидете свои карты', Game_Start(message), reply_markup=keyboard_bot.Player_field(Player.comparative_deck))
         rand = randint(0, 1)
         if rand == 0: #Переделать для дальнейших игр
-            bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump(), deck))
+            bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump(), deck)[1])
             bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
             deck.first_step(rand)
             game.filter = True
@@ -101,6 +101,7 @@ def condition_bot_protection(message):
         card_photo = Bot_Game.protection_bot(message.text, deck)
         if card_photo[0] == True:
             bot.send_photo(message.chat.id, card_photo[1], reply_markup=keyboard_bot.Player_field(Player.comparative_deck))
+            print(f"field{deck.field}")
         else:
             bot.send_message(message.chat.id, "У меня нечем биться, беру")
             Bot_Game.bot_take(deck)
