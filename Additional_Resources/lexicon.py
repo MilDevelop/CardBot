@@ -43,13 +43,12 @@ def simbol(name: str):
         return list[3]
 
 def ober_simbol(name: str):
-    for iter in name:
-        if simbol(iter) == '❤️':
-            return 'HEARTS'
-        elif simbol(iter) == '♠️':
-            return 'SPADES'
-        elif simbol(iter) == '♣️':
-            return 'CLUBS'
-        elif simbol(iter) == '♦️':
-            return 'DIAMONDS'
+    if name == '❤️':
+        return 'HEARTS'
+    elif name == '♠️':
+        return 'SPADES'
+    elif name == '♣️':
+        return 'CLUBS'
+    elif name == '♦️':
+        return 'DIAMONDS'
 

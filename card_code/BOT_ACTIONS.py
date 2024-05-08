@@ -1,3 +1,5 @@
+import pprint
+
 from Additional_Resources.Ieraration import Hierarchy
 from Additional_Resources import lexicon
 from card_code.DECK import Deck
@@ -96,6 +98,7 @@ class Bot_Game:
             dictionary['image'] = deck.images[item]
             self.Bot_deck.append(dictionary)
             self.comparative_deck.append(item)
+            pprint.pprint(self.Bot_deck)
 
     def NEED_CARDS(self) -> int:
         self.need_cards = 6 - len(self.Bot_deck)
