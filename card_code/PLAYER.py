@@ -10,7 +10,7 @@ class Player:
         if self.need_cards <= 0:
             pass
         else:
-            for i in range(self.need_cards):
+            for i in range(len(main_deck)):
                 self.User_deck.append(main_deck[i])
                 self.comparative_deck.append(f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}")
 

@@ -19,6 +19,7 @@ class Deck:
         self.trump_card: str
         self.first_field: int
         self.images: dict = {}
+        self.diff: list = []
     def shuffle(self):
         endPoint = "https://deckofcardsapi.com/api/deck/new/shuffle/"
         params = {"deck_count": 1}
@@ -36,15 +37,20 @@ class Deck:
         self.first_field = number
     def Return_Trump(self):
         return self.trump_card
-    def GiveAway_Card(self, need_cards):
-        if need_cards >= 1:
-            Given_Cards = []
-            for item in range(need_cards):
-                Given_Cards.append(self.main_deck[item])
-                self.main_deck.remove(self.main_deck[item])
-            return Given_Cards
-        else:
-            pass
+    def Return_Diff(self):
+        return self.diff
+    def GiveAway_Card(self, need_cards, full: bool):
+        if full == True:
+            if need_cards >= 1:
+                Given_Cards = []
+                for item in range(need_cards):
+                    Given_Cards.append(self.main_deck[item])
+                    self.main_deck.remove(self.main_deck[item])
+                return Given_Cards
+            else:
+                pass
+
+
     def field_add(self, card: str):
         self.field.append(card)
 
