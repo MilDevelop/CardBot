@@ -13,13 +13,14 @@ from Additional_Resources.lexicon import simbol
 class Deck:
     def __init__(self):
         self.deck_id: str
-        self.main_deck: list
+        self.main_deck: list = []
         self.garbage_deck: list = []
         self.field: list = []
         self.trump_card: str
         self.first_field: int
         self.images: dict = {}
-        self.diff: list = []
+        self.diff: int = 0
+        self.full_take = True
     def shuffle(self):
         endPoint = "https://deckofcardsapi.com/api/deck/new/shuffle/"
         params = {"deck_count": 1}
@@ -39,8 +40,10 @@ class Deck:
         return self.trump_card
     def Return_Diff(self):
         return self.diff
-    def GiveAway_Card(self, need_cards, full: bool):
-        if full == True:
+
+    def GiveAway_Card(self, need_cards): #obj -> кому отдаем
+        print(f"{len(self.main_deck)}")
+        if self.full_take == True:
             if need_cards >= 1:
                 Given_Cards = []
                 for item in range(need_cards):
@@ -49,7 +52,16 @@ class Deck:
                 return Given_Cards
             else:
                 pass
-
+        elif self.full_take == None:
+            print("Im Here")
+            Given_Cards = []
+            for item in self.main_deck:
+                Given_Cards.append(item)
+                self.main_deck.remove(item)
+            self.full_take = False
+            return Given_Cards
+        else:
+            pass
 
     def field_add(self, card: str):
         self.field.append(card)
