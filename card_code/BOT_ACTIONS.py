@@ -9,14 +9,18 @@ class Bot_Game:
         self.comparative_deck: list = []
         self.need_cards = 6 - len(self.Bot_deck)
     def GiveCards(self, main_deck: list):
-        self.need_cards = 6 - len(self.Bot_deck)
-        if self.need_cards <= 0:
+        if type(main_deck) != list:
             pass
+        elif len(main_deck) > 0:
+            self.need_cards = 6 - len(self.Bot_deck)
+            if self.need_cards <= 0:
+                pass
+            else:
+                for i in range(len(main_deck)):
+                    self.Bot_deck.append(main_deck[i])
+                    self.comparative_deck.append(f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}")
         else:
-            for i in range(len(main_deck)):
-                self.Bot_deck.append(main_deck[i])
-                self.comparative_deck.append(f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}")
-
+            pass
     def check_similar(self, card: str, deck: Deck):
         if len(deck.field) > 1:
             for iter in deck.field:
@@ -27,14 +31,21 @@ class Bot_Game:
 
     def Atack_Bot(self, trump: str, deck: Deck):
         rang_card: dict = {}
+        rang_card_trump: dict = {}
         for element in self.Bot_deck:
             if element['suit'] != trump:
                 if element['value'] in Hierarchy and self.check_similar(f"{element['value']}-{lexicon.simbol(element['suit'])}", deck):
                     rang_card[Hierarchy.index(element['value'])] = element
             elif element['suit'] == trump:
                 if element['value'] in Hierarchy and self.check_similar(f"{element['value']}-{lexicon.simbol(element['suit'])}", deck):
-                    rang_card[Hierarchy.index(element['value'])] = element
-        if len(list(rang_card.keys())) != 0:
+                    rang_card_trump[Hierarchy.index(element['value'])] = element
+        if len(list(rang_card.keys())) == 0 and len(list(rang_card_trump.keys())):
+            index = self.Bot_deck.index(rang_card_trump[min(list(rang_card_trump.keys()))])
+            deck.field_add(f"{self.Bot_deck[index]['value']}-{lexicon.simbol(self.Bot_deck[index]['suit'])}")
+            self.Bot_deck.remove(rang_card_trump[min(list(rang_card_trump.keys()))])
+            self.comparative_deck.pop(self.comparative_deck.index(self.comparative_deck[index]))
+            return [True, rang_card_trump[min(list(rang_card_trump.keys()))]['image']]
+        elif len(list(rang_card.keys())) != 0:
             index = self.Bot_deck.index(rang_card[min(list(rang_card.keys()))])
             deck.field_add(f"{self.Bot_deck[index]['value']}-{lexicon.simbol(self.Bot_deck[index]['suit'])}")
             self.Bot_deck.remove(rang_card[min(list(rang_card.keys()))])
@@ -72,7 +83,7 @@ class Bot_Game:
             else:
                 return [False]
 
-        else:
+        elif len(maybe) != 0:
             test_mass: dict = {}
             for el in maybe:
                 if Hierarchy.index(el[0:len(el)-3]) > Hierarchy.index(attack_status):
@@ -90,6 +101,8 @@ class Bot_Game:
                 return [True, photo]
             else:
                 return [False]
+        else:
+            return [False]
     def bot_take(self, deck: Deck) -> None:
         for item in deck.field:
             dictionary: dict = {}
