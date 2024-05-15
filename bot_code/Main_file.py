@@ -2,7 +2,7 @@ import telebot, keyboard_bot, GAME
 from random import randint
 from telebot import types
 from Bot_idetification import load_config
-from Additional_Resources.lexicon import LEXICON_RU
+from Additional_Resources.lexicon import LEXICON_RU, simbol
 from card_code.DECK import Deck
 from card_code.PLAYER import Player
 from card_code.BOT_ACTIONS import Bot_Game
@@ -27,6 +27,8 @@ def on_click_start(message):
         bot.send_message(message.chat.id, 'Происходит перетасовка карт...'
                                           'Сейчас вы увидете свои карты', Game_Start(message), reply_markup=keyboard_bot.Player_field(Player.comparative_deck, game))
         rand = randint(0, 1)
+        game.filter = False
+        game.add_player(message.chat.id, message.chat.first_name)
         if rand == 0: #Переделать для дальнейших игр
             bot.send_photo(message.chat.id, Bot_Game.Atack_Bot(deck.Return_Trump(), deck)[1])
             bot.send_message(message.chat.id, LEXICON_RU['step_bot'])
@@ -44,16 +46,18 @@ def on_click_start(message):
 
 def Game_Start(message):
     deck.shuffle()
-    to_pin = bot.send_message(message.chat.id, f'{deck.GetDeck()} - козырь!').message_id
+    to_pin = bot.send_message(message.chat.id, f'{simbol(deck.GetDeck())} - козырь!').message_id
     bot.pin_chat_message(message.chat.id, message_id=to_pin)
     Runtime_Check_finish()
     Bot_Game.GiveCards(deck.GiveAway_Card(Bot_Game.NEED_CARDS()))
     Player.GiveCards(deck.GiveAway_Card(Player.NEED_CARDS()))
 
 def complete(message):
+    keyboard_bot.Player_field(Player.comparative_deck, game)
     if game.complete[1] == "Player":
         bot.send_message(message.chat.id, LEXICON_RU['win'])
         game.filter = None
+        game.add_score(message.chat.id)
     if game.complete[1] == "Bot":
         bot.send_message(message.chat.id, LEXICON_RU['lose'])
         game.filter = None
@@ -115,6 +119,9 @@ def bot_takeCMD_actions(message):
 def help(message):
      bot.send_message(message.chat.id, LEXICON_RU['/help'])
 
+@bot.message_handler(commands=['stat'])
+def stat(message):
+    bot.send_message(message.chat.id, f"Ваш счёт - {game.score}")
 @bot.message_handler(commands=['broken'])
 def broken(message):
     bot.send_message(message.chat.id, LEXICON_RU['/broken'])

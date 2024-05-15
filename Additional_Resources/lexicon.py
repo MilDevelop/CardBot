@@ -50,5 +50,5 @@ def ober_simbol(name: str):
     elif name == '♣️':
         return 'CLUBS'
     elif name == '♦️':
-        return 'DIAMONDS'руги
+        return 'DIAMONDS'
 

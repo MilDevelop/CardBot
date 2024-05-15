@@ -9,7 +9,7 @@ def first_keyboard():
     return markup
 
 def Player_field(mass_card: list, game: Game):
-    if len(mass_card) > 1 and  game.complete[0] == False:
+    if len(mass_card) >= 1 and game.filter != None:
         markup = types.ReplyKeyboardMarkup()
         for i in range(len(mass_card)):
             mark = types.KeyboardButton(f"{mass_card[i][0:len(mass_card[i])-3]}-{mass_card[i][-2:]}") #фиксить твот тут примерно
