@@ -57,7 +57,7 @@ def complete(message):
     if game.complete[1] == "Player":
         bot.send_message(message.chat.id, LEXICON_RU['win'])
         game.filter = None
-        game.add_score(message.chat.id)
+        game.add_score()
     if game.complete[1] == "Bot":
         bot.send_message(message.chat.id, LEXICON_RU['lose'])
         game.filter = None
