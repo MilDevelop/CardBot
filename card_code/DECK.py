@@ -7,9 +7,11 @@
 #
 #     def Check(self, user_mast: str, bot_mast: str):
 #         return user_mast[-1] == bot_mast.lower()
-import requests, pprint
+import requests, pprint  # BaCat: я не уверен, но это вроде 'pprint' не нужен
 from random import choice
 from Additional_Resources.lexicon import simbol
+
+
 class Deck:
     def __init__(self):
         self.deck_id: str
@@ -21,11 +23,13 @@ class Deck:
         self.images: dict = {}
         self.diff: int = 0
         self.full_take = True
+
     def shuffle(self):
         endPoint = "https://deckofcardsapi.com/api/deck/new/shuffle/"
         params = {"deck_count": 1}
         response = requests.get(endPoint, params=params)
         self.deck_id = response.json()["deck_id"]
+
     def GetDeck(self):
         Point = f"https://deckofcardsapi.com/api/deck/{self.deck_id}/draw/?count=52"
         self.main_deck = requests.get(Point).json()['cards']
@@ -36,14 +40,16 @@ class Deck:
 
     def first_step(self, number: int):
         self.first_field = number
+
     def Return_Trump(self):
         return self.trump_card
+
     def Return_Diff(self):
         return self.diff
 
-    def GiveAway_Card(self, need_cards): #obj -> кому отдаем
+    def GiveAway_Card(self, need_cards):  # obj -> кому отдаем
         print(f"{len(self.main_deck)}")
-        if self.full_take == True:
+        if self.full_take is True:
             if need_cards >= 1:
                 Given_Cards = []
                 for item in range(need_cards):
@@ -52,7 +58,7 @@ class Deck:
                 return Given_Cards
             else:
                 pass
-        elif self.full_take == None:
+        elif self.full_take is None:
             print("Im Here")
             Given_Cards = []
             for item in self.main_deck:

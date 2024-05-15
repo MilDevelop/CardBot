@@ -1,10 +1,13 @@
 from Additional_Resources import lexicon, Ieraration
 from card_code.DECK import Deck
+
+
 class Player:
     def __init__(self):
         self.User_deck: list = []
         self.comparative_deck: list = []
         self.need_cards: int = 6 - len(self.User_deck)
+
     def GiveCards(self, main_deck: list):
         if type(main_deck) != list:
             pass
@@ -19,11 +22,12 @@ class Player:
         else:
             pass
 
-    def check_field_player(self, given_card: str, field, deck: Deck) -> bool: #what is it???
+    def check_field_player(self, given_card: str, field, deck: Deck) -> bool:  # what is it???
         if field[-2:] == lexicon.simbol(deck.Return_Trump()):
             return True
         elif field[-2:] == given_card[-2:]:
-            if Ieraration.Hierarchy.index(field[0:len(field) - 3]) > Ieraration.Hierarchy.index(given_card[0:len(field) - 3]):
+            if (Ieraration.Hierarchy.index(field[0:len(field) - 3]) > Ieraration.Hierarchy.
+                    index(given_card[0:len(field) - 3])):
                 return True
             return False
         return False
@@ -44,6 +48,7 @@ class Player:
             dictionary['image'] = deck.images[item]
             self.User_deck.append(dictionary)
             self.comparative_deck.append(item)
+
     def NEED_CARDS(self) -> int:
         self.need_cards = 6 - len(self.User_deck)
         return self.need_cards
