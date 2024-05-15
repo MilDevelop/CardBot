@@ -6,13 +6,18 @@ class Player:
         self.comparative_deck: list = []
         self.need_cards: int = 6 - len(self.User_deck)
     def GiveCards(self, main_deck: list):
-        self.need_cards = 6 - len(self.User_deck)
-        if self.need_cards <= 0:
+        if type(main_deck) != list:
             pass
+        elif len(main_deck) > 0:
+            self.need_cards = 6 - len(self.User_deck)
+            if self.need_cards <= 0:
+                pass
+            else:
+                for i in range(len(main_deck)):
+                    self.User_deck.append(main_deck[i])
+                    self.comparative_deck.append(f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}")
         else:
-            for i in range(len(main_deck)):
-                self.User_deck.append(main_deck[i])
-                self.comparative_deck.append(f"{main_deck[i]['value']}-{lexicon.simbol(main_deck[i]['suit'])}")
+            pass
 
     def check_field_player(self, given_card: str, field, deck: Deck) -> bool: #what is it???
         if field[-2:] == lexicon.simbol(deck.Return_Trump()):
