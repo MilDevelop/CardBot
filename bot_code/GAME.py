@@ -3,6 +3,7 @@ class Game:
         self.filter: bool = False
         self.complete: list = [False, "none"]
         self.score: int = 0
+
     def add_score(self):
         self.score += 10
 

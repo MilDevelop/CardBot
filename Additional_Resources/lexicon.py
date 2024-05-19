@@ -31,6 +31,7 @@ LEXICON_RU: dict[str, str] = {'yes_button': 'ДА!',
                               'draw': 'Ничья',
                               'not_cmd': 'Я не понимать...'}
 
+
 def simbol(name: str):
     list = ['❤️', '♠️', '♣️', '♦️']
     if name == 'HEARTS':
@@ -42,6 +43,7 @@ def simbol(name: str):
     elif name == 'DIAMONDS':
         return list[3]
 
+
 def ober_simbol(name: str):
     if name == '❤️':
         return 'HEARTS'
@@ -51,4 +53,3 @@ def ober_simbol(name: str):
         return 'CLUBS'
     elif name == '♦️':
         return 'DIAMONDS'
-
