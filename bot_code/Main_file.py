@@ -73,7 +73,7 @@ def complete(message):
 
 
 def Runtime_Check_finish() -> bool:
-    if len(deck.main_deck) > 3:
+    if len(deck.main_deck) > 12 - (len(Player.User_deck) + len(Bot_Game.Bot_deck)):
         deck.full_take = True
         return True
     elif len(deck.main_deck) == 0:
@@ -86,7 +86,7 @@ def Runtime_Check_finish() -> bool:
             game.complete = [True, "Bot"]
             return False
         return True
-    elif len(deck.main_deck) <= 3:  # Вот тут можно вмепсто < 0 поставить 1
+    elif len(deck.main_deck) <= 12 - (len(Player.User_deck) + len(Bot_Game.Bot_deck)):  # Вот тут можно вмепсто < 0 поставить 1
         deck.full_take = None
         if len(Player.User_deck) - len(Bot_Game.Bot_deck) > 0:
             deck.diff = abs(len(Player.User_deck) - len(Bot_Game.Bot_deck))  # Если true -> у игрока больше карт
