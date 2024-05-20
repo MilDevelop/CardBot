@@ -19,11 +19,18 @@ bot_attack = [False, False]
 # ----------------------------------------------------------------
 
 
+
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.send_message(message.chat.id, LEXICON_RU['/start'], reply_markup=keyboard_bot.first_keyboard())
-    bot.register_next_step_handler(message, on_click_start)
+    bot.send_message(message.chat.id, "Во что будете играть?", reply_markup=keyboard_bot.start_keyboard())
+    bot.register_next_step_handler(message, on_click)
 
+def on_click(message):
+    if message.text == "Карты - Дурак":
+        bot.send_message(message.chat.id, LEXICON_RU['/start'], reply_markup=keyboard_bot.first_keyboard())
+        bot.register_next_step_handler(message, on_click_start_card)
+    elif message.text == "Voice inside":
+        pass
 
 def on_click_start(message):
     if message.text == LEXICON_RU['yes_button']:
