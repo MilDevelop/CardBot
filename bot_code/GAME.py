@@ -8,5 +8,5 @@ class Game:
         self.score += 10
 
     def add_player(self, id, name):
-        with open("Players.txt", "w") as myfile:
+        with open("Players.txt", "w", encoding='utf-8') as myfile:
             myfile.write(f"{name} - {id}\n")
