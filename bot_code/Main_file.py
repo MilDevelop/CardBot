@@ -19,7 +19,6 @@ bot_attack = [False, False]
 # ----------------------------------------------------------------
 
 
-
 @bot.message_handler(commands=['start'])
 def start(message):
     bot.send_message(message.chat.id, "Во что будете играть?", reply_markup=keyboard_bot.start_keyboard())
@@ -31,8 +30,7 @@ def on_click(message):
         bot.register_next_step_handler(message, on_click_start_card)
     elif message.text == "Voice inside":
         pass
-
-def on_click_start(message):
+def on_click_start_card(message):
     if message.text == LEXICON_RU['yes_button']:
         bot.send_message(message.chat.id, LEXICON_RU['start_game'])
         bot.send_message(message.chat.id, 'Окей', reply_markup=types.ReplyKeyboardRemove())  # Вместо 'окей' ->
@@ -71,11 +69,11 @@ def Game_Start(message):
 def complete(message):
     keyboard_bot.Player_field(Player.comparative_deck, game)
     if game.complete[1] == "Player":
-        bot.send_message(message.chat.id, LEXICON_RU['win'])
+        bot.send_message(message.chat.id, LEXICON_RU['win'], reply_markup=keyboard_bot.Player_field([0], game))
         game.filter = None
         game.add_score()
     if game.complete[1] == "Bot":
-        bot.send_message(message.chat.id, LEXICON_RU['lose'])
+        bot.send_message(message.chat.id, LEXICON_RU['lose'], reply_markup=keyboard_bot.Player_field([0], game))
         game.filter = None
 
 
